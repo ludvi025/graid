@@ -1,7 +1,3 @@
-import lib.sessions
+import lib.moodie as moodie
 
-sm = lib.sessions.SessionManager()
-
-ss = sm.loadSession('test')
-
-print(ss)
+moodie.unpack('./test/test21.zip')
