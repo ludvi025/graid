@@ -6,12 +6,11 @@ class YesNo:
     def __init__(_, prompt):
         _.prompt = prompt
 
-
     def get(_):
         result = input(_.prompt + ' (y/n): ')
         return result.lower() in YesNo.yesses
 
-class Grade:
+class Points:
     def __init__(_, maxpoints=float('inf')):
         _.maxpoints = maxpoints
 
@@ -19,9 +18,9 @@ class Grade:
         grade = -1
         while (grade > _.maxpoints) or (grade < 0):
             try:
-                grade = float(input('Enter grade: '))
+                grade = float(input('Enter points: '))
                 if grade < 0:
-                    print("Not a valid grade.")
+                    print("Invalid points.")
             except ValueError:
-                print("Not a valid grade.")
+                print("Invalid points.")
         return grade
