@@ -1,4 +1,4 @@
-from .Menu import Menu
+from .menu import Menu
 
 opts = 'GradeHomeworks CheckGradeFiles GradingStatistics ConsolidateGrades ' + \
        'PrintHelpText TerminateProgram' 

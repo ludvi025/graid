@@ -1,4 +1,4 @@
-from .Menu import Menu
+from .menu import Menu
 
 opts = 'RunTests RunShell ViewCode GradeCode PrintHelpText NextHomework'
 
