@@ -1,7 +1,3 @@
-# Menu Interface
-#
-# Deliver custom intuitive interfaces
-
 from enum import Enum
 
 class Menu:

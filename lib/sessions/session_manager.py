@@ -1,7 +1,3 @@
-# Session Manager
-#
-# Handle creation and loading of sessions.
-
 import json
 
 from .. import inputs

@@ -1,0 +1,36 @@
+# moodie (I)
+Handles all data tasks associated with moodle including:
+1. Unpacking a moodle .zip file download
+2. Exporting a moodle ready gradebook CSV
+
+# grader (II)
+Handles grading of individual files:
+1. Output source code for a file
+2. Load module into interactive shell
+3. Run unittests against modules (see Resources)
+4. Cleanly handle and display errors in student code
+   without breaking
+5. Cleanly enable breaking out of infinite loops
+
+# pool (III)
+Handles maintaining the list of files to be graded:
+1. Allow multiple TA's to grade simultaneously by keeping track of who's 
+   grading what
+2. Selects files matching a pattern from the grading directory
+3. Ensure that all files are graded
+
+# gradebook (IV)
+Handles grading records:
+1. Solicit and record student grades
+2. Provide a consolidated record of all grades
+
+# inputs (V)
+Manage soliciting input from the user including:
+1. Validated prompts
+2. Menus
+
+# sessions (VI)
+Handle creation, saving, and loading of sessions.
+
+# recurse (VII)
+Handle common recursive filesystem tasks

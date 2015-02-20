@@ -1,9 +1,3 @@
-# Gradebook
-#
-# Handles grading records:
-# 1. Solicit and record student grades
-# 2. Provide a consolidated record of all grades
-
 from ..recurse.rfind import rfind
 from . import record
 
