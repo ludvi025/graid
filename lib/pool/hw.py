@@ -4,6 +4,8 @@ import json
 FILE_NAME = 'status.json'
 
 class HW:
+    statuses = ('not started', 'in progress', 'finished', 'error')
+
     def __init__(_, file_path):
         _.file_path = file_path
         _.status = 'not started'
@@ -21,19 +23,25 @@ class HW:
             if path.exists(status_path):
                 try: 
                     f = open(status_path, 'r')
-                    _.status = json.load(f)['status']
+                    _.status = json.load(f)
+                    f.close()
                     return _.status
                 except:
-                    return 'not started'
+                    return 'error'
             else:
                 return 'not started'
 
     def setStatus(_, status):
-        if status not in ('not started', 'in progress', 'finished'):
+        if status not in HW.statuses:
             return False
         else:
             status_path = _.getStatusPath()
-            f = open(status_path, 'w')
             try:
-                json.dump({'status': status}, f)
-                 
+                f = open(status_path, 'w')
+                json.dump(status, f)
+                f.close() 
+                _.status = status
+                return True
+            except:
+                _.status = 'error'
+                return False

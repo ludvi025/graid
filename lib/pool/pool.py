@@ -1,4 +1,3 @@
-### WIP ###
 from .recurse.rfind import rfind
 from .hw import HW
 
@@ -22,19 +21,17 @@ class Pool:
     def __iter__(_):
         return PoolIter(_.files)
 
-    # Maybe have separate files for holding grades and
-    # semaphores
-    def checkRemaining(_):
-        left = 0
+    def getStatusCounts(_):
+        counts = {status: 0 for status in HW.statuses}
         for hw in _:
-            if hw.graded(...): # Need to know the filename
-                left += 1
-        return left
+            status = hw.getStatus()
+            counts[status] += 1
+        return counts
 
-    def getNext(_):
-        # Get the next file that hasn't been graded and isn't 
-        # in the process of being graded
-        pass
+    def getNextHW(_):
+        for hw in _:
+            if hw.getStatus() == 'not started':
+                return hw
 
 class PoolIter:
     def __init__(_, files):
