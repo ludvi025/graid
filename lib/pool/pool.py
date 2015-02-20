@@ -19,7 +19,7 @@ class Pool:
             _.hws.append(HW(f))
 
     def __iter__(_):
-        return PoolIter(_.files)
+        return PoolIter(_.hws)
 
     def getStatusCounts(_):
         counts = {status: 0 for status in HW.statuses}
@@ -34,14 +34,13 @@ class Pool:
                 return hw
 
 class PoolIter:
-    def __init__(_, files):
-        _.files = files
+    def __init__(_, hws):
+        _.hws = hws
         _.index = 0
-        _.end = len(files - 1)
+        _.end = len(hws - 1)
 
     def __next__(_):
         if _.index == _.end:
             raise StopIteration
         _.index += 1
-        # TODO: Make this do something more useful
-        return _.files[_.index]
+        return _.hws[_.index]
