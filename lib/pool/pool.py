@@ -1,22 +1,33 @@
+### WIP ###
 from .recurse.rfind import rfind
+from .hw import HW
 
 # Folders to ignore
 IGNORE = "__MACOSX"
 
 class Pool:
     def __init__(_, patterns, root_dir):
-        _.files = []
+        _.hws = []
+
+        # Locate all files that might need to be graded
+        files = []
         for pattern in patterns:
-            files = rfind.find(pattern, root_dir, IGNORE)
-            for f in files:
-                if f not in _.files:
-                    _.files.append(f)
+            files += rfind.find(pattern, root_dir, IGNORE)
+        # Remove duplicates
+        files = sorted(set(files))
+
+        for f in files:
+            _.hws.append(HW(f))
 
     def __iter__(_):
         return PoolIter(_.files)
 
     def checkRemaining(_):
-        pass
+        left = 0
+        for hw in _:
+            if hw.graded(...): # Need to know the filename
+                left += 1
+        return left
 
     def getNext(_):
         # Get the next file that hasn't been graded and isn't in the 

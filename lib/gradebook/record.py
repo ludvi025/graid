@@ -2,13 +2,14 @@ import json
 
 class Record(dict):
     def __init__(_, moodle_id, first_name, last_name, \
-                 grade, comments, grader):
+                 grade, comments, grader, complete=False):
         _['moodle_id'] = moodle_id
         _['first_name'] = first_name
         _['last_name'] = last_name
         _['grade'] = grade
         _['comments'] = comments
         _['grader'] = grader
+        _['complete'] = complete
 
     def toFile(_, output_path):
         try:
