@@ -22,6 +22,8 @@ class Pool:
     def __iter__(_):
         return PoolIter(_.files)
 
+    # Maybe have separate files for holding grades and
+    # semaphores
     def checkRemaining(_):
         left = 0
         for hw in _:
@@ -30,8 +32,8 @@ class Pool:
         return left
 
     def getNext(_):
-        # Get the next file that hasn't been graded and isn't in the 
-        # process of being graded
+        # Get the next file that hasn't been graded and isn't 
+        # in the process of being graded
         pass
 
 class PoolIter:

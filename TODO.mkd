@@ -1,2 +1,4 @@
-Define interfaces bewteen modules.
-Menu/state diagram
+[ ] Define interfaces bewteen modules.
+[ ] Menu/state diagram
+[ ] Make sure csv can be uploaded to moodle, Dario said this doesn't always work
+[ ] Add file renaming to unpack using code in moss prep
