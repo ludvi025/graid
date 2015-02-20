@@ -1,1 +1,2 @@
 Define interfaces bewteen modules.
+Menu/state diagram

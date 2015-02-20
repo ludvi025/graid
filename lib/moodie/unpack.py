@@ -5,7 +5,7 @@
 # 2. Exporting a moodle ready gradebook
 
 import os
-from .runzip import runzip
+from ..recurse.runzip import runzip
 from .sub_parser import parseSub
 
 def unpack(moodle_zip_path):
@@ -33,19 +33,19 @@ def mapMoodleIdsToFiles(directory):
     file_map = {}
     # Walk the directory
     for root, dirs, files in os.walk(directory):
-    # For everything in the directory that has a moodleid in the 
-    # name, add it to the list for that moodleid
+    # For everything in the directory that has a moodle_id in the 
+    # name, add it to the list for that moodle_id
         for f in files:
             info = parseSub(f)
-            if info['moodleid'] != '':
-                moodle_id = info['moodleid']
+            if info['moodle_id'] != '':
+                moodle_id = info['moodle_id']
                 if moodle_id not in file_map:
                     file_map[moodle_id] = []
                 file_map[moodle_id].append(os.path.join(root, f))
         for d in dirs:
             info = parseSub(d)
-            if info['moodleid'] != '':
-                moodle_id = info['moodleid']
+            if info['moodle_id'] != '':
+                moodle_id = info['moodle_id']
                 if moodle_id not in file_map:
                     file_map[moodle_id] = []
                 file_map[moodle_id].append(os.path.join(root, d))

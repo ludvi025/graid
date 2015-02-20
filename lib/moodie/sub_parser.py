@@ -8,15 +8,15 @@ def parseSub(file_name):
     m = re.match(cmp_regex, file_name)
     if m:
       return {
-          'lastname' : m.group('lastname'), 
-          'firstname' : m.group('firstname'), 
-          'moodleid' : m.group('moodleid')
+          'last_name' : m.group('lastname'), 
+          'first_name' : m.group('firstname'), 
+          'moodle_id' : m.group('moodleid')
       }
     else:
       return {
-          'lastname' : '', 
-          'firstname' : '', 
-          'moodleid' : ''
+          'last_name' : '', 
+          'first_name' : '', 
+          'moodle_id' : ''
           }
 
 def test():
