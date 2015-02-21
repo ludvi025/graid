@@ -27,7 +27,9 @@ class Points:
         return grade
 
 class FilePath:
-    def __init__(_, must_exist=False, must_not_exist=False):
+    def __init__(_, msg, accept_empty=False, must_exist=False, must_not_exist=False):
+        _.msg = msg
+        _.accept_empty = accept_empty
         _.must_exist = must_exist
         _.must_not_exist = must_not_exist
 
@@ -35,22 +37,28 @@ class FilePath:
         if _.must_exist:
             exists = False
             while not exists:
-                file_path = input("Enter path to file: ")
-                file_path = path.abspath(file_path)
-                if path.exists(file_path):
+                file_path = input(_.msg)
+                if _.accept_empty and file_path == '':
                     exists = True
                 else:
-                    print('Error, file does not exist...')
+                    file_path = path.abspath(file_path)
+                    if path.isfile(file_path):
+                        exists = True
+                    else:
+                        print('Error, file does not exist...')
 
         elif _.must_not_exist:
             exists = True
             while exists:
-                file_path = input("Enter path to file: ")
-                file_path = path.abspath(file_path)
-                if path.exists(file_path):
-                    print('Error, file already exists...')
-                else:
+                file_path = input(_.msg)
+                if _.accept_empty and file_path == '':
                     exists = False
+                else:
+                    file_path = path.abspath(file_path)
+                    if path.isfile(file_path):
+                        print('Error, file already exists...')
+                    else:
+                        exists = False
 
         else:
             file_path = input("Enter path to file: ")
