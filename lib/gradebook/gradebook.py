@@ -2,7 +2,7 @@ from ..recurse.rfind import rfind
 from . import record
 
 class Gradebook:
-    def __init__(_, user_ids):
+    def __init__(_):
         _.records = []
 
     def __iter__(_):
@@ -20,5 +20,6 @@ class Gradebook:
             record = Record.fromFile(f)
             if record:
                 records_loaded += 1
+                _.addRecord(record)
             else:
                 print('Failed to load record: {}'.format(f))

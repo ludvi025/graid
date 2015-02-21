@@ -13,10 +13,7 @@ USER_ID = 'User id'
 
 # Takes a Gradebook class and output file and creates CSV file ready to
 # be uploaded to moodle
-def exportGradebook(grade_book, user_ids_path=None, output_file=None):
-    if not output_file:
-        output_file = input('Enter output file name: ')
-
+def exportGradebook(grade_book, output_file, user_ids_path=None):
     try:
         # Load user id map
         uids = {}
