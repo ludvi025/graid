@@ -57,4 +57,13 @@ class Menu:
 
         return opt
 
+    def loop(_, actions):
+        done = False
+        while not done:
+            option = _.get_option()
+            if option in actions:
+                done = actions[option]()
+            else:
+                print('Not implemented')
 
+        return False
