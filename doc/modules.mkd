@@ -3,7 +3,7 @@ Handles all data tasks associated with moodle including:
 1. Unpacking a moodle .zip file download
 2. Exporting a moodle ready gradebook CSV
 
-# grader (II)
+# runner (II)
 Handles grading of individual files:
 1. Output source code for a file
 2. Load module into interactive shell
