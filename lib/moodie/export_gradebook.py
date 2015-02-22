@@ -1,6 +1,5 @@
 import os
 import csv
-from ..recurse.rfind import rfind
 
 # Shall be the same as header of grade book
 FIELDS = 'User id,Moodle id,First name,Last name,Grade,Comments,Grader ID'

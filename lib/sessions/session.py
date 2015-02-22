@@ -3,8 +3,9 @@ import json
 from ..debug import dbprint, db_exec_info
 
 class Session:
-    def __init__(_, name, patterns, test, points):
+    def __init__(_, name, hw_dir, patterns, test, points):
         _.name = name
+        _.hw_dir = hw_dir
         _.patterns = patterns
         _.test = test
         _.points = points
@@ -25,11 +26,12 @@ class Session:
                 fin = open(file_path, 'r')
                 d = json.load(fin)
                 dbprint('JSON Loaded: ',d)
+                hw_dir   = d['hw_dir']
                 patterns = d['patterns']
-                test = d['test']
-                points = d['points']
+                test     = d['test']
+                points   = d['points']
                 fin.close()
-                session = Session(name, patterns, test, points)
+                session = Session(name, hw_dir, patterns, test, points)
                 return session
             except:
                 dbprint(db_exec_info()[0])
@@ -42,9 +44,10 @@ class Session:
             file_path = path.join(file_dir, _.file_name)
             fout = open(file_path, 'w')
             json.dump({
+                'hw_dir'  : _.hw_dir,
                 'patterns': _.patterns,
-                'points': _.points,
-                'test': _.test
+                'points'  : _.points,
+                'test'    : _.test
             }, fout);
             fout.close()
             return True

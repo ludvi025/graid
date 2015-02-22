@@ -65,5 +65,3 @@ class Menu:
                 done = actions[option]()
             else:
                 print('Not implemented')
-
-        return False

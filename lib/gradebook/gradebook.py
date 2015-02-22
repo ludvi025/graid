@@ -1,4 +1,4 @@
-from ..recurse.rfind import rfind
+from ..tools import rfind
 from . import record
 
 class Gradebook:
@@ -11,7 +11,6 @@ class Gradebook:
     def addRecord(_, record):
         _.records.append(record)
 
-    # Should this be grade_file_name or a list of paths???
     def fromFiles(_, grade_file_name, root_dir='.'):
         files = rfind(grade_file_name, root_dir)
         records_loaded = 0

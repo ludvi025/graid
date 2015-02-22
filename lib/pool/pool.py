@@ -1,4 +1,5 @@
-from .recurse.rfind import rfind
+from ..tools import rfind
+from ..debug import dbprint
 from .hw import HW
 
 # Folders to ignore
@@ -11,7 +12,7 @@ class Pool:
         # Locate all files that might need to be graded
         files = []
         for pattern in patterns:
-            files += rfind.find(pattern, root_dir, IGNORE)
+            files += rfind(pattern, root_dir, IGNORE)
         # Remove duplicates
         files = sorted(set(files))
 
@@ -32,15 +33,26 @@ class Pool:
         for hw in _:
             if hw.getStatus() == 'not started':
                 return hw
+        return None
+
+    def clearInProgress(_):
+        count = 0
+        for hw in _:
+            if hw.getStatus() == 'in progress':
+                hw.setStatus('not started')
+                count += 1
+        return count
 
 class PoolIter:
     def __init__(_, hws):
         _.hws = hws
         _.index = 0
-        _.end = len(hws - 1)
+        _.end = len(hws)
 
     def __next__(_):
         if _.index == _.end:
             raise StopIteration
+        hw = _.hws[_.index]
+        dbprint(hw.file_path)
         _.index += 1
-        return _.hws[_.index]
+        return hw
