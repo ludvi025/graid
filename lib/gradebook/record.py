@@ -1,5 +1,6 @@
 import json
 from os import path
+from ..debug import dbprint, db_exec_info
 
 FILE_EXT = '.grade'
 
@@ -26,11 +27,14 @@ class Record(dict):
     def toJSON(_):
         return json.dumps(_)# Because inherits dict
 
-    def fromFile(name, directory):
+    def fromFile(name, directory=None):
         try:
-            file_path = path.join(directory, name + FILE_EXT)
-            d = json.load(file_path)
-            return Record(*d)
+            if directory == None:
+                file_path = name
+            else:
+                file_path = path.join(directory, name + FILE_EXT)
+            d = json.load(open(file_path))
+            return Record(**d)
         except:
             return None
 

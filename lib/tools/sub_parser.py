@@ -1,11 +1,13 @@
 import re
+from pathlib import Path
 
 regex = r"(?:.*/)?(?P<firstname>[^/]*) (?P<lastname>[^/]*)_(?P<moodleid>\d*)_\w*_\w*_\w*/?.*"
 #compileing the regex is optional. It is a performance optimization.
 cmp_regex = re.compile(regex)
 
-def parseSub(file_name):
-    m = re.match(cmp_regex, file_name)
+def parseSub(file_path):
+    file_path = Path(file_path).as_posix()
+    m = re.match(cmp_regex, file_path)
     if m:
       return {
           'last_name' : m.group('lastname'), 

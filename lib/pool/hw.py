@@ -10,7 +10,7 @@ class HW:
 
     def __init__(_, file_path):
         _.file_path = file_path
-        _.first_name, _.last_name, _.moodle_id = parseSub(file_path)
+        _.student_info = parseSub(file_path)
         _.status = 'not started'
 
     def getStatusPath(_):
@@ -21,12 +21,7 @@ class HW:
         return path.dirname(_.file_path)
 
     def getStudentInfo(_):
-        student_info = {
-            'first_name': _.first_name,
-            'last_name': _.last_name,
-            'moodle_id': _.moodle_id
-        }
-        return student_info
+        return _.student_info
             
     def getStatus(_, force_check_graded=False):
         # Save time by not reading file if graded

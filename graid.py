@@ -125,8 +125,16 @@ def admin_unpack():
     return False
 
 def admin_export():
+    if session == None:
+        session_load()
     gb = Gradebook.fromFiles(session.name + '.grade', session.hw_dir)
-    exportGradebook(gb)
+    fp1 = FilePath('Enter output file path: ', must_not_exist=True)
+    file_path = fp1.get()
+    fp2 = FilePath('Enter path to user id map: ', \
+                   must_exist=True, accept_empty=True)
+    user_ids_map = fp2.get()
+
+    exportGradebook(gb, file_path, user_ids_map)
     return False
     
 def admin_stats():
@@ -164,9 +172,17 @@ def session_create():
 def session_load():
     # TODO: Add error message for bad load
     global session, session_manager
-    session = session_manager.loadSession()
-    if not session:
-        PressEnter('Failed to load session.').get()
+    if session == None:
+        session = session_manager.loadSession()
+        while session == None:
+            print('Error, session not found.')
+            session = session_manager.loadSession()
+    else:
+        new_session = session_manager.loadSession()
+        if new_session != None:
+            session = None
+        else:
+            PressEnter('Failed to load new session.').get()
     return False
 
 def session_edit():

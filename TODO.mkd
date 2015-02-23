@@ -1,4 +1,7 @@
-[ ] Define interfaces bewteen modules.
-[ ] Menu/state diagram
-[ ] Make sure csv can be uploaded to moodle, Dario said this doesn't always work
+[x] Define interfaces bewteen modules.
+[x] Menu/state diagram
+[ ] Use unittest to run tests against scripts
+[ ] Make sure csv can be uploaded to moodle, Dario said this doesn't always work, think this has something to do with the newline option in csv.DictWriter. See `export_gradebook.py`
 [ ] Add file renaming to unpack using code in moss prep
+[ ] Convert all os.path to use pathlib.Path
+

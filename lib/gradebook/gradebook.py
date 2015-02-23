@@ -1,9 +1,13 @@
 from ..tools import rfind
-from . import record
+from .record import Record
+from ..debug import dbprint
 
 class Gradebook:
-    def __init__(_):
-        _.records = []
+    def __init__(_, records=None):
+        if records == None:
+            _.records = []
+        else:
+            _.records = records
 
     def __iter__(_):
         return iter(_.records)
@@ -11,14 +15,15 @@ class Gradebook:
     def addRecord(_, record):
         _.records.append(record)
 
-    def fromFiles(_, grade_file_name, root_dir='.'):
+    def fromFiles(grade_file_name, root_dir='.'):
         files = rfind(grade_file_name, root_dir)
-        records_loaded = 0
+        records = []
 
         for f in files:
             record = Record.fromFile(f)
             if record:
-                records_loaded += 1
-                _.addRecord(record)
+                records.append(record)
             else:
                 print('Failed to load record: {}'.format(f))
+
+        return Gradebook(records)
