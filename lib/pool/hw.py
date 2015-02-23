@@ -3,19 +3,20 @@ import json
 from ..tools import parseSub
 from ..debug import dbprint
 
-FILE_NAME = 'status.json'
+FILE_EXT = '.status'
 
 class HW:
     statuses = ('not started', 'in progress', 'graded', 'error')
 
-    def __init__(_, file_path):
+    def __init__(_, file_path, session_name):
         _.file_path = file_path
         _.student_info = parseSub(file_path)
+        _.session_name = session_name
         _.status = 'not started'
 
     def getStatusPath(_):
         file_dir = _.getFileDir()
-        return path.join(file_dir, FILE_NAME)
+        return path.join(file_dir, _.session_name + FILE_EXT)
 
     def getFileDir(_):
         return path.dirname(_.file_path)
@@ -28,6 +29,7 @@ class HW:
         if _.status == 'graded' and not force_check_graded:
             return _.status
         else:
+            dbprint('there')
             status_path = _.getStatusPath()
             if path.exists(status_path):
                 try: 

@@ -6,8 +6,9 @@ from .hw import HW
 IGNORE = "__MACOSX"
 
 class Pool:
-    def __init__(_, patterns, root_dir):
+    def __init__(_, patterns, root_dir, session_name):
         _.hws = []
+        _.session_name = session_name
 
         # Locate all files that might need to be graded
         files = []
@@ -17,7 +18,7 @@ class Pool:
         files = sorted(set(files))
 
         for f in files:
-            _.hws.append(HW(f))
+            _.hws.append(HW(f, session_name))
 
     def __iter__(_):
         return PoolIter(_.hws)
@@ -28,6 +29,10 @@ class Pool:
             status = hw.getStatus()
             counts[status] += 1
         return counts
+
+    def recheckAll(_):
+        for hw in _:
+            status = hw.getStatus(force_check_graded=True)
 
     def getNextHW(_):
         for hw in _:

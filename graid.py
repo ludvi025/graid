@@ -32,15 +32,21 @@ def grade_loop():
         session_load()
     
     if hw_pool == None:
-        hw_pool = Pool(session.patterns, session.hw_dir)
+        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
 
     current_hw = hw_pool.getNextHW()
     if current_hw == None:
-        in_progress = hw_pool.getStatusCounts()['in progress']
-        msg = 'No homeworks left for you, ' \
-            + 'but {} still in progress.'.format(in_progress)
-        PressEnter(msg).get()
-
+        dbprint('here')
+        hw_pool.recheckAll()
+        current_hw = hw_pool.getNextHW()
+        if current_hw == None:
+            in_progress = hw_pool.getStatusCounts()['in progress']
+            msg = 'No homeworks left for you, ' \
+                + 'but {} still in progress.'.format(in_progress)
+            PressEnter(msg).get()
+        else:
+            current_hw.setStatus('in progress')
+            grade_menu.loop(grade_actions)
     else:
         current_hw.setStatus('in progress')
         grade_menu.loop(grade_actions)
@@ -74,8 +80,8 @@ def grade_run_interactive():
     return False
 
 def grade_run_tests():
-    global current_hw
-    runTests(current_hw.file_path)
+    global current_hw, session
+    runTests(current_hw.file_path, session.test)
     return False
 
 def grade_enter_grade():
@@ -88,15 +94,21 @@ def grade_enter_grade():
     return False
 
 def grade_next_hw():
-    global current_hw
+    global current_hw, hw_pool
     if current_hw.getStatus() == 'graded':
         current_hw = hw_pool.getNextHW()
         if current_hw != None:
             current_hw.setStatus('in progress')
             return False
         else:
-            PressEnter('No homework left to grade!').get()
-            return True
+            hw_pool.recheckAll()
+            current_hw = hw_pool.getNextHW()
+            if current_hw == None:
+                PressEnter('No homework left to grade!').get()
+                return True
+            else:
+                current_hw.setStatus('in progress')
+                return False
     else:
         PressEnter('Finish grading this homework first.').get()
         return False
@@ -147,7 +159,7 @@ def admin_verify():
         session_load()
 
     if hw_pool == None:
-        hw_pool = Pool(session.patterns, session.hw_dir)
+        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
 
     count = hw_pool.clearInProgress()
     msg = '{} were still in progress and were reset'.format(count)
