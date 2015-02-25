@@ -16,6 +16,7 @@ class Menu:
         _.name = name
         _.decor = decor
 
+    # Prints pretty menus
     def __print(_, decor, descriptions):
         print()
         print(decor * LINE_LEN)
