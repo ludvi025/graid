@@ -47,4 +47,3 @@ def mapMoodleIdsToFiles(directory):
 
 def getJoinStr():
     return os.path.join('.','.')[1:-1]
-
