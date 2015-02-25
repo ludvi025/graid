@@ -1,19 +1,23 @@
 import json
+from os import path
+from ..debug import dbprint, db_exec_info
+
+FILE_EXT = '.grade'
 
 class Record(dict):
     def __init__(_, moodle_id, first_name, last_name, \
-                 grade, comments, grader, complete=False):
+                 grade, comments, grader):
         _['moodle_id'] = moodle_id
         _['first_name'] = first_name
         _['last_name'] = last_name
         _['grade'] = grade
         _['comments'] = comments
         _['grader'] = grader
-        _['complete'] = complete
 
-    def toFile(_, output_path):
+    def toFile(_, name, directory):
         try:
-            fout = open(output_path, 'w')
+            file_path = path.join(directory, name + FILE_EXT)
+            fout = open(file_path, 'w')
             fout.write(_.toJSON()) 
             fout.close()
             return True
@@ -23,10 +27,14 @@ class Record(dict):
     def toJSON(_):
         return json.dumps(_)# Because inherits dict
 
-    def fromFile(file_path):
+    def fromFile(name, directory=None):
         try:
-            d = json.load(file_path)
-            return Record(*d)
+            if directory == None:
+                file_path = name
+            else:
+                file_path = path.join(directory, name + FILE_EXT)
+            d = json.load(open(file_path))
+            return Record(**d)
         except:
             return None
 

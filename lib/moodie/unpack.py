@@ -1,6 +1,5 @@
 import os
-from ..recurse.runzip import runzip
-from .sub_parser import parseSub
+from ..tools import runzip, parseSub
 
 def unpack(moodle_zip_path):
     root_dir = runzip(moodle_zip_path)

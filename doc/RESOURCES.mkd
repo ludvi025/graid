@@ -1,2 +1,5 @@
 Testing Tools:
 https://wiki.python.org/moin/PythonTestingToolsTaxonomy
+
+File path auto completion:
+http://stackoverflow.com/questions/6656819/filepath-autocompletion-using-users-input
