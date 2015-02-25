@@ -181,6 +181,7 @@ admin_actions = {
 def session_create():
     global session, session_manager
     session = session_manager.createSession()
+    add_session_name()
     return False
 
 def session_load():
