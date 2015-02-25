@@ -15,6 +15,8 @@ dbprint('Running with debug statements...')
 session = None
 session_manager = SessionManager()
 
+menus_lst=[main_menu, admin_menu, grade_menu, session_menu]
+
 hw_pool = None
 current_hw = None
 
@@ -189,10 +191,12 @@ def session_load():
         while session == None:
             print('Error, session not found.')
             session = session_manager.loadSession()
+        add_session_name()
     else:
         new_session = session_manager.loadSession()
         if new_session != None:
-            session = None
+            session = new_session
+            add_session_name()
         else:
             PressEnter('Failed to load new session.').get()
     return False
@@ -207,6 +211,16 @@ def session_save():
     global session, session_manager
     session_manager.saveSession(session)
     return False
+
+def add_session_name():
+    global session, menus_lst
+    n=session.name
+    for i in menus_lst:
+        if ':' in i.name:
+            i.name=(i.name.split(':')[0])+":  "+n
+        else:
+            i.name=i.name+":  "+n
+    
 
 session_actions = {
     session_menu.options.Create: session_create,
