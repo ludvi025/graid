@@ -36,14 +36,16 @@ def printCode(file_path):
         contents = fin.readlines()
         fin.close()
 
+        length=len(contents)
+
         #####################
         i=-1
-        while contents[i]=='\n' and i>-len(contents):
+        while i>-length and contents[i]=='\n':
             i-=1
         contents=contents[:i+1]
         #####################
 
-        for i in range(len(contents)):
+        for i in range(length):
             print(str(i+1).rjust(4,' '),': ', contents[i], end='')
         print()
     except:
