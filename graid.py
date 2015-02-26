@@ -1,5 +1,5 @@
 from lib.inputs import main_menu, grade_menu, session_menu, admin_menu
-from lib.inputs import PressEnter, FilePath, InputRecord
+from lib.inputs import PressEnter, FilePath, InputRecord, YesNo
 from lib.sessions import SessionManager
 from lib.moodie import unpack, exportGradebook 
 from lib.gradebook import Gradebook
@@ -181,39 +181,47 @@ admin_actions = {
 def session_create():
     global session, session_manager
     session = session_manager.createSession()
-    add_session_name()
+    update_menu_name()
+
+    save_session = YesNo('Save session now?')
+    if save_session.get():
+        session_save()
+
     return False
 
 def session_load():
     # TODO: Add error message for bad load
     global session, session_manager
-    if session == None:
-        session = session_manager.loadSession()
-        while session == None:
-            print('Error, session not found.')
-            session = session_manager.loadSession()
-        add_session_name()
+    new_session = session_manager.loadSession()
+    if new_session == None:
+        print('Failed to load session.')
     else:
-        new_session = session_manager.loadSession()
-        if new_session != None:
-            session = new_session
-            add_session_name()
-        else:
-            PressEnter('Failed to load new session.').get()
+        session = new_session
+        print('Session `{}` loaded successfully.'.format(session.name))
+        update_menu_name()
+
     return False
 
 def session_edit():
     global session, session_manager
     dbprint(session)
     session_manager.editSession(session)
+
+    save_session = YesNo('Save session now?')
+    if save_session.get():
+        session_save()
+
     return False
 
 def session_save():
     global session, session_manager
-    session_manager.saveSession(session)
+    if session_manager.saveSession(session):
+        print('Session `{}` saved successfully.'.format(session.name))
+    else:
+        print('Failed to save session `{}`'.format(session.name))
     return False
 
-def add_session_name():
+def update_menu_name():
     global session, menus_lst
     n=session.name
     for i in menus_lst:
