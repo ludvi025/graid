@@ -1,6 +1,8 @@
 import os
 from ..tools import runzip, parseSub
 
+FILE_TEXT_TO_REMOVE = ['_assignsubmission_file']
+
 def unpack(moodle_zip_path):
     root_dir = runzip(moodle_zip_path)
     file_map = mapMoodleIdsToFiles(root_dir)
@@ -14,35 +16,54 @@ def normalizeDirectory(root, file_map):
     # any residual directories.
 
     for moodle_id in file_map:
-        d = os.path.join(root, moodle_id)
-        if not os.path.isdir(d):
-            os.mkdir(d)
+        # Create new directories named with the moodle submission
+        directory = os.path.join(root, moodle_id)
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+
+        # Move all files into new directories
         for file_path in file_map[moodle_id]:
-            f = file_path.split(getJoinStr())[-1]
-            print('Adding', f, 'to', moodle_id)
-            os.renames(file_path, os.path.join(root, moodle_id, f))
+            old_name = os.path.basename(file_path)
+            new_name = removeCommonText(old_name)
+            new_path = os.path.join(moodle_id, new_name)
+            print('Moving', old_name, 'to', new_path)
+            os.renames(file_path, os.path.join(root, new_path))
+
+def removeCommonText(file_path):
+    for text in FILE_TEXT_TO_REMOVE:
+        file_path = file_path.replace(text, '')
+    return file_path
 
 def mapMoodleIdsToFiles(directory):
+# Creates a map of all the files that belong to a particular 
+# moodle submission
+
     file_map = {}
+
     # Walk the directory
     for root, dirs, files in os.walk(directory):
-    # For everything in the directory that has a moodle_id in the 
-    # name, add it to the list for that moodle_id
+
+        # For everything in the directory that has a moodle_id in the 
+        # name, add it to the list for that moodle_id
         for f in files:
             info = parseSub(f)
+
             if info['moodle_id'] != '':
                 moodle_id = info['moodle_id']
+
                 if moodle_id not in file_map:
                     file_map[moodle_id] = []
+
                 file_map[moodle_id].append(os.path.join(root, f))
+
         for d in dirs:
             info = parseSub(d)
             if info['moodle_id'] != '':
                 moodle_id = info['moodle_id']
+
                 if moodle_id not in file_map:
                     file_map[moodle_id] = []
-                file_map[moodle_id].append(os.path.join(root, d))
-    return file_map
 
-def getJoinStr():
-    return os.path.join('.','.')[1:-1]
+                file_map[moodle_id].append(os.path.join(root, d))
+
+    return file_map
