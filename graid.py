@@ -83,7 +83,10 @@ def grade_run_interactive():
 
 def grade_run_tests():
     global current_hw, session
-    runTests(current_hw.file_path, session.test)
+    if session.test != '':
+        runTests(current_hw.file_path, session.test)
+    else:
+        print('No tests supplied.')
     return False
 
 def grade_enter_grade():
