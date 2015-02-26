@@ -1,6 +1,8 @@
 import os
 import subprocess
 import sys
+import signal
+
 from ..debug import dbprint, db_exec_info
 
 
@@ -56,13 +58,18 @@ def runCode(file_path, interactive=False):
     file_dir, file_name = os.path.split(file_path)
     os.chdir(file_dir)
 
-    # TODO: Ctrl+C handler
+    # Store the original handler and set a new one
+    original_sigint = signal.getsignal(signal.SIGINT)
+    signal.signal(signal.SIGINT, _graceful_handler)
 
     # Call the student code
     if interactive:
         subprocess.call([sys.executable, '-i', file_name])
     else:
         subprocess.call([sys.executable, file_name])
+
+    # Restore the handler
+    signal.signal(signal.SIGINT, original_sigint)
 
     # Return to original directory
     os.chdir(current_dir)
@@ -74,6 +81,11 @@ def runInteractive(file_path):
 def runTests(file_path, test):
     print(run_tests_msg)
     mod_load_error = False
+
+    # Store the original handler and set a new one
+    original_sigint = signal.getsignal(signal.SIGINT)
+    signal.signal(signal.SIGINT, _graceful_handler)
+
     out, err = runWithInput(file_path, open(test).read())
     if out:
         out = out.replace('>>>','\n').replace('...','\n')
@@ -84,3 +96,11 @@ def runTests(file_path, test):
     if not err.replace('\n','').replace(' ','')=='':
         print('Errors from', test, '\n------')
         print(err)
+
+    # Restore the handler
+    signal.signal(signal.SIGINT, original_sigint)
+
+def _graceful_handler(signum, frame):
+    print("\n\033[91mLooks like you pushed Ctrl-C.\033[0m")
+    print("Feel free to push it again if you actually want to quit the script.\n")
+
