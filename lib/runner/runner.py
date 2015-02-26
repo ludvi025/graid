@@ -1,6 +1,8 @@
 import os
 import subprocess
 import sys
+from ..debug import dbprint, db_exec_info
+
 
 from .tester import runWithInput
 
@@ -33,23 +35,18 @@ def printCode(file_path):
 
     try:
         fin = open(file_path,'r')
-        contents = fin.readlines()
+        contents = list(fin)
         fin.close()
 
-        length=len(contents)
+        while contents[-1] == '\n' and len(contents) > 0:
+            contents.pop()
 
-        #####################
-        i=-1
-        while i>-length and contents[i]=='\n':
-            i-=1
-        contents=contents[:i+1]
-        #####################
-
-        for i in range(length):
+        for i in range(len(contents)):
             print(str(i+1).rjust(4,' '),': ', contents[i], end='')
         print()
     except:
         print('Failed to open file: {}\n'.format(file_path))
+        dbprint(db_exec_info())
 
 def runCode(file_path, interactive=False):
 
