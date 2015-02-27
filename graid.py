@@ -29,6 +29,7 @@ def session_loop():
     return False
 
 def grade_loop():
+    # TODO: Fix this so it doesn't break if bad session entered.
     global session, hw_pool, current_hw
     if session == None:
         session_load()
@@ -44,7 +45,7 @@ def grade_loop():
         if current_hw == None:
             in_progress = hw_pool.getStatusCounts()['in progress']
             msg = 'No homeworks left for you, ' \
-                + 'but {} still in progress.'.format(in_progress)
+                + 'and {} still in progress.'.format(in_progress)
             PressEnter(msg).get()
         else:
             current_hw.setStatus('in progress')
@@ -193,7 +194,6 @@ def session_create():
     return False
 
 def session_load():
-    # TODO: Add error message for bad load
     global session, session_manager
     new_session = session_manager.loadSession()
     if new_session == None:
@@ -232,7 +232,6 @@ def update_menu_name():
             i.name=(i.name.split(':')[0])+":  "+n
         else:
             i.name=i.name+":  "+n
-    
 
 session_actions = {
     session_menu.options.Create: session_create,
