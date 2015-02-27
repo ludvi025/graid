@@ -1,2 +1,27 @@
 # graid
+
 Python homework grading assistant.
+
+To start, do:
+
+    python3 graid.py
+
+## User Ids
+
+Moodle, in all its infinite wisdom, doesn't attach the username to the 
+downloaded files. To circumvent this problem, a mapping can be provided
+when exporting gradebooks to add the username directly to the grade for
+each student, allowing the exported gradebook to be directly uploaded
+to moodle. The file __must__ be a CSV file with the first column containing
+the moodle submission id and the second column containing the username.
+The header row __must__ contain the fields `moodle_id` and `user_id`
+exactly.
+
+Eg.:
+
+    moodle_id,user_id
+    1234567,ludvi025@umn.edu
+    8910112,tcp@umn.edu 
+    ...
+
+
