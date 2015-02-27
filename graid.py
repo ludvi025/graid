@@ -7,10 +7,14 @@ from lib.pool import Pool
 from lib.runner import printCode, runCode, runInteractive, runTests
 from lib.debug import dbprint
 
+import os
+
 # TODO: Add changing root directory
 # TODO: Structue in a singleton object instead of using global
 
 dbprint('Running with debug statements...')
+
+os.umask(0o007)
 
 session = None
 session_manager = SessionManager()
