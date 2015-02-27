@@ -37,18 +37,19 @@ def exportGradebook(grade_book, output_file, user_ids_path=None):
         dbprint(uids)
 
         fout = open(output_file, 'w')
-        cout = csv.DictWriter(fout, FIELDS)
+        cout = csv.DictWriter(fout, FIELDS, extrasaction='ignore')
         cout.writerow(HEADER_ROW)
 
         for record in grade_book:
+            dbprint(record)
             if user_ids_path != None:
-                if record[TO_USER_ID_KEY] in user_ids_path:
-                    to_user_id = uids[record[TO_USER_ID_KEY]]
-                    record[USER_ID_KEY] = uids[to_user_id]
+                if record[TO_USER_ID_KEY] in uids:
+                    user_id = uids[record[TO_USER_ID_KEY]]
+                    record[USER_ID_KEY] = user_id
                 else:
-                    record[USER_ID] = 'xxxxx000'
+                    record[USER_ID_KEY] = 'xxxxx000'
             else:
-                record[USER_ID] = 'xxxxx000'
+                record[USER_ID_KEY] = 'xxxxx000'
             cout.writerow(record)
 
         fout.close()
