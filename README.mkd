@@ -4,7 +4,11 @@ Python homework grading assistant.
 
 To start, do:
 
-    python3 graid.py
+    ./graid.py
+
+or if that doesn't work:
+
+    python3.4 graid.py
 
 ## User Ids
 
