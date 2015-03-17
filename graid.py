@@ -37,28 +37,33 @@ def grade_loop():
     global session, hw_pool, current_hw
     if session == None:
         session_load()
-    
-    if hw_pool == None:
-        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
 
-    current_hw = hw_pool.getNextHW()
-    if current_hw == None:
-        hw_pool.recheckAll()
+    if session != None:
+    
+        if hw_pool == None:
+            hw_pool = Pool(session.patterns, session.hw_dir, session.name)
+
         current_hw = hw_pool.getNextHW()
         if current_hw == None:
-            in_progress = hw_pool.getStatusCounts()['in progress']
-            msg = 'No homeworks left for you, ' \
-                + 'and {} still in progress.'.format(in_progress)
-            PressEnter(msg).get()
+            dbprint('here')
+            hw_pool.recheckAll()
+            current_hw = hw_pool.getNextHW()
+            if current_hw == None:
+                in_progress = hw_pool.getStatusCounts()['in progress']
+                msg = 'No homeworks left for you, ' \
+                    + 'and {} still in progress.'.format(in_progress)
+                PressEnter(msg).get()
+            else:
+                current_hw.setStatus('in progress')
+                grade_menu.loop(grade_actions)
         else:
             current_hw.setStatus('in progress')
             print_hw_info(hw_pool, current_hw)
             grade_menu.loop(grade_actions)
+        return False
+
     else:
-        current_hw.setStatus('in progress')
-        print_hw_info(hw_pool, current_hw)
-        grade_menu.loop(grade_actions)
-    return False
+        return False
 
 def admin_loop():
     admin_menu.loop(admin_actions)
@@ -177,14 +182,19 @@ def admin_verify():
     if session == None:
         session_load()
 
-    if hw_pool == None:
-        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
+    if session != None:
 
-    count = hw_pool.clearInProgress()
-    msg = '{} were still in progress and were reset'.format(count)
-    PressEnter(msg).get()
+        if hw_pool == None:
+            hw_pool = Pool(session.patterns, session.hw_dir, session.name)
     
-    return False
+        count = hw_pool.clearInProgress()
+        msg = '{} were still in progress and were reset'.format(count)
+        PressEnter(msg).get()
+        
+        return False
+
+    else:
+        return False
 
 admin_actions = {
     admin_menu.options.Unpack: admin_unpack,
