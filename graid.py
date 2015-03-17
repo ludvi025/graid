@@ -37,27 +37,31 @@ def grade_loop():
     global session, hw_pool, current_hw
     if session == None:
         session_load()
-    
-    if hw_pool == None:
-        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
 
-    current_hw = hw_pool.getNextHW()
-    if current_hw == None:
-        dbprint('here')
-        hw_pool.recheckAll()
+    if session != None:
+    
+        if hw_pool == None:
+            hw_pool = Pool(session.patterns, session.hw_dir, session.name)
+
         current_hw = hw_pool.getNextHW()
         if current_hw == None:
-            in_progress = hw_pool.getStatusCounts()['in progress']
-            msg = 'No homeworks left for you, ' \
-                + 'and {} still in progress.'.format(in_progress)
-            PressEnter(msg).get()
+            dbprint('here')
+            hw_pool.recheckAll()
+            current_hw = hw_pool.getNextHW()
+            if current_hw == None:
+                in_progress = hw_pool.getStatusCounts()['in progress']
+                msg = 'No homeworks left for you, ' \
+                    + 'and {} still in progress.'.format(in_progress)
+                PressEnter(msg).get()
+            else:
+                current_hw.setStatus('in progress')
+                grade_menu.loop(grade_actions)
         else:
             current_hw.setStatus('in progress')
             grade_menu.loop(grade_actions)
+        return False
     else:
-        current_hw.setStatus('in progress')
-        grade_menu.loop(grade_actions)
-    return False
+        return False
 
 def admin_loop():
     admin_menu.loop(admin_actions)
