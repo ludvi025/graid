@@ -23,6 +23,15 @@ class Pool:
     def __iter__(_):
         return PoolIter(_.hws)
 
+    def getTotal(_):
+        return len(_.hws)
+
+    def getIndex(_, hw):
+        if hw in _.hws:
+            return _.hws.index(hw)
+        else:
+            return -1
+
     def getStatusCounts(_):
         counts = {status: 0 for status in HW.statuses}
         for hw in _:

@@ -43,7 +43,6 @@ def grade_loop():
 
     current_hw = hw_pool.getNextHW()
     if current_hw == None:
-        dbprint('here')
         hw_pool.recheckAll()
         current_hw = hw_pool.getNextHW()
         if current_hw == None:
@@ -53,9 +52,11 @@ def grade_loop():
             PressEnter(msg).get()
         else:
             current_hw.setStatus('in progress')
+            print_hw_info(hw_pool, current_hw)
             grade_menu.loop(grade_actions)
     else:
         current_hw.setStatus('in progress')
+        print_hw_info(hw_pool, current_hw)
         grade_menu.loop(grade_actions)
     return False
 
@@ -103,12 +104,20 @@ def grade_enter_grade():
         PressEnter('Failed to record grade.').get()
     return False
 
+def print_hw_info(hw_pool, hw):
+    total = hw_pool.getTotal()
+    num = hw_pool.getIndex(hw) + 1
+    fp = hw.file_path
+    print('Grading file {} of {}:'.format(num, total))
+    print(fp)
+
 def grade_next_hw():
     global current_hw, hw_pool
     if current_hw.getStatus() == 'graded':
         current_hw = hw_pool.getNextHW()
         if current_hw != None:
             current_hw.setStatus('in progress')
+            print_hw_info(hw_pool, current_hw)
             return False
         else:
             hw_pool.recheckAll()
@@ -117,7 +126,7 @@ def grade_next_hw():
                 PressEnter('No homework left to grade!').get()
                 return True
             else:
-                current_hw.setStatus('in progress')
+                print_hw_info(hw_pool, current_hw)
                 return False
     else:
         PressEnter('Finish grading this homework first.').get()
