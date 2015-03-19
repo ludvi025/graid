@@ -7,7 +7,6 @@ from lib.pool import Pool
 from lib.runner import printCode, runCode, runInteractive, runTests
 from lib.debug import dbprint
 
-
 import os
 
 # TODO: Add changing root directory
@@ -62,8 +61,7 @@ def grade_loop():
             print_hw_info(hw_pool, current_hw)
             grade_menu.loop(grade_actions)
         return False
-
-    else:
+    else
         return False
 
 def admin_loop():
@@ -182,8 +180,7 @@ def admin_verify():
     global hw_pool
     if session == None:
         session_load()
-
-    if session != None:
+    if session != None
 
         if hw_pool == None:
             hw_pool = Pool(session.patterns, session.hw_dir, session.name)
@@ -193,9 +190,8 @@ def admin_verify():
         PressEnter(msg).get()
         
         return False
-
-    else:
-        return False
+    else
+        return Fals
 
 admin_actions = {
     admin_menu.options.Unpack: admin_unpack,
