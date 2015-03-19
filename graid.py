@@ -33,15 +33,13 @@ def session_loop():
     return False
 
 def grade_loop():
-    # TODO: Fix this so it doesn't break if bad session entered.
     global session, hw_pool, current_hw
     if session == None:
         session_load()
 
     if session != None:
     
-        if hw_pool == None:
-            hw_pool = Pool(session.patterns, session.hw_dir, session.name)
+        hw_pool = Pool(session.patterns, session.hw_dir, session.name)
 
         current_hw = hw_pool.getNextHW()
         if current_hw == None:
@@ -61,7 +59,7 @@ def grade_loop():
             print_hw_info(hw_pool, current_hw)
             grade_menu.loop(grade_actions)
         return False
-    else
+    else:
         return False
 
 def admin_loop():
@@ -180,7 +178,7 @@ def admin_verify():
     global hw_pool
     if session == None:
         session_load()
-    if session != None
+    if session != None:
 
         if hw_pool == None:
             hw_pool = Pool(session.patterns, session.hw_dir, session.name)
@@ -190,8 +188,8 @@ def admin_verify():
         PressEnter(msg).get()
         
         return False
-    else
-        return Fals
+    else:
+        return False
 
 admin_actions = {
     admin_menu.options.Unpack: admin_unpack,
