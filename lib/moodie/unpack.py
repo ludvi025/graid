@@ -25,7 +25,7 @@ def normalizeDirectory(root, file_map):
         for file_path in file_map[moodle_id]:
             old_name = os.path.basename(file_path)
             # Remove common text and spaces
-            new_name = removeCommonText(old_name).replace(' ', '_')
+            new_name = removeCommonText(old_name).replace(' ', '')
             new_path = os.path.join(moodle_id, new_name)
             print('Moving', old_name, 'to', new_path)
             os.renames(file_path, os.path.join(root, new_path))
