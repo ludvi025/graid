@@ -1,1 +1,1 @@
-{"test": "./test.py", "patterns": ["*.py"], "points": 1.0, "hw_dir": "./hws"}
+{"test": "./test/test.py", "patterns": ["*.py"], "points": 1.0, "hw_dir": "./test/hws"}
