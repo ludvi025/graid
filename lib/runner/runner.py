@@ -5,6 +5,7 @@ import signal
 
 from ..debug import dbprint, db_exec_info
 
+from .syntaxhi import color_line
 
 from .tester import runWithInput
 
@@ -36,16 +37,24 @@ def printCode(file_path):
     print(print_src_msg)
 
     try:
+        # Check to see if we're running linux (syntax highlighting only supports Linux terminals)
+        linux = (os.name == "posix")
+            
+        print(file_load_msg)
+
         fin = open(file_path,'r')
-        contents = list(fin)
+        contents = fin.readlines()
         fin.close()
-
-        while contents[-1] == '\n' and len(contents) > 0:
-            contents.pop()
-
+        
+        # Print out the code line-by-line
         for i in range(len(contents)):
-            print(str(i+1).rjust(4,' '),': ', contents[i], end='')
-        print()
+            if linux:
+                print(str(i+1).rjust(4,'_'),': ', syntaxhi.color_line(contents[i]), end = '')
+            else:
+                print(str(i+1).rjust(4,'_'),': ', contents[i], end = '')
+            
+        print('\n')
+        print('\nFile: ',file_path)
     except:
         print('Failed to open file: {}\n'.format(file_path))
         dbprint(db_exec_info())
