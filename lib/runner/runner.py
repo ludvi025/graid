@@ -6,6 +6,7 @@ import signal
 from ..debug import dbprint, db_exec_info
 
 from .syntaxhi import color_line
+from .syntaxhi import mline_string
 
 from .tester import runWithInput
 
@@ -36,26 +37,30 @@ run_tests_msg = '''
 def printCode(file_path):
     print(print_src_msg)
 
-    try:
-        # Check to see if we're running linux (syntax highlighting only supports Linux terminals)
-        linux = (os.name == "posix")
+    # try:
+    # Check to see if we're running linux (syntax highlighting only supports Linux terminals)
+    linux = (os.name == "posix")
 
-        fin = open(file_path,'r')
-        contents = fin.readlines()
-        fin.close()
+    fin = open(file_path,'r')
+    contents = fin.readlines()
+    fin.close()
 
-        # Print out the code line-by-line
-        for i in range(len(contents)):
-            if linux:
-                print(str(i+1).rjust(4,' '),': ', color_line(contents[i]), end = '')
-            else:
-                print(str(i+1).rjust(4,' '),': ', contents[i], end = '')
+    # If we are in a multi-line string
+    in_string = False
+    # Print out the code line-by-line
+    for i in range(len(contents)):
+        if linux:
+            print(str(i + 1).rjust(4,' '),': ', color_line(contents[i], in_string), end = '')
+            if mline_string(contents[i]):
+                in_string = not in_string
+        else:
+            print(str(i + 1).rjust(4,' '),': ', contents[i], end = '')
 
-        print('\n')
-        print('\nFile: ',file_path)
-    except:
-        print('Failed to open file: {}\n'.format(file_path))
-        dbprint(db_exec_info())
+    print('\n')
+    print('\nFile: ',file_path)
+    # except:
+    #     print('Failed to open file: {}\n'.format(file_path))
+    #     dbprint(db_exec_info())
 
 def runCode(file_path, interactive=False):
 
