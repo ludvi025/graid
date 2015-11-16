@@ -39,7 +39,7 @@ def is_string(s):
     s = str(s)
     s_chars = ['"', "'", '"""', "'''"]
     for c in s_chars:
-        if (s[0] == c and s[-1] == c):
+        if s[0] == c and s[-1] == c or s[:3] in s_chars:
             return True
     return False
 
@@ -70,13 +70,18 @@ def color_word(s):
 def words(s):
     s = str(s)
     separators = " ()[]{}+=-/*%&^|><,:;"
-    s_chars = "'\""
+    s_chars = ["'",'"', '"""', "'''"]
+    cur_s = '"'
     word_list = []
     in_string = False
     start = 0
     end = 1
     while end < len(s):
-        if s[start] in s_chars:
+        if s[start:start + 3] in s_chars:
+            cur_s = s[start:start + 3]
+            in_string = True
+        elif s[start] in s_chars:
+            cur_s = s[start]
             in_string = True
         if not in_string:
             if s[end] in separators:
@@ -86,7 +91,11 @@ def words(s):
                 word_list.append(s[start])
                 start += 1
         else:
-            if s[end] in s_chars:
+            if (end + 3) < len(s) and s[end:end + 3] == cur_s:
+                in_string = False
+                word_list.append(s[start:end + 1])
+                start = end + 1
+            elif s[end] == cur_s:
                 in_string = False
                 word_list.append(s[start:end + 1])
                 start = end + 1
