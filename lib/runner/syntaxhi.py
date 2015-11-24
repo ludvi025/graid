@@ -1,12 +1,12 @@
 # Syntax highlighting program for graid
 # Bridger Herman 2015
 
-# ANSI color codes (Linux only)
-RED = "\x1B[38;2;255;18;18m"
-YELLOW = "\x1B[38;2;255;177;18m"
-GREEN = "\x1B[38;2;18;232;18m"
-BLUE = "\x1B[38;2;18;156;238m"
-END = "\033[0m"
+# ANSI color codes
+RED = "\x1b[0;31m"
+GREEN = "\x1b[0;32m"
+BLUE = "\x1b[0;34m"
+CYAN = "\x1b[1;36m"
+END = "\x1b[0m"
 
 # Is a string an official python keyword or an operator?
 def is_keyword(s):
@@ -58,7 +58,7 @@ def color_word(s):
     if is_value(s):
         return RED + s + END
     elif is_keyword(s):
-        return YELLOW + s + END
+        return CYAN + s + END
     elif is_string(s):
         return GREEN + s + END
     elif is_comment(s):
