@@ -2,9 +2,9 @@
 # Bridger Herman 2015
 
 # ANSI color codes
-RED = "\x1b[0;31m"
-GREEN = "\x1b[0;32m"
-BLUE = "\x1b[0;34m"
+RED = "\x1b[1;31m"
+GREEN = "\x1b[1;32m"
+YELLOW = "\x1b[1;33m"
 CYAN = "\x1b[1;36m"
 END = "\x1b[0m"
 
@@ -28,7 +28,7 @@ def is_value(s):
 def is_number(s):
     s = str(s)
     for c in s:
-        if not c.isdigit() and c != ".":
+        if not c.isdigit() and c != "." and c != "\n":
             return False
     return True
 
@@ -62,7 +62,7 @@ def color_word(s):
     elif is_string(s):
         return GREEN + s + END
     elif is_comment(s):
-        return BLUE + s + END
+        return YELLOW + s + END
     else:
         return s
 
@@ -117,7 +117,7 @@ def color_line(line, mline_string = False):
         while i < len(lwords):
             # Comment out rest of line if it's a comment
             if is_comment(lwords[i]):
-                lwords[i] = BLUE + lwords[i]
+                lwords[i] = YELLOW + lwords[i]
                 lwords[len(lwords) - 1] += END
                 i = len(lwords)
             else:
@@ -127,5 +127,24 @@ def color_line(line, mline_string = False):
     elif mline_string:
         line = GREEN + line + END
     else:
-        line = BLUE + line + END
+        line = YELLOW + line + END
     return line
+
+if __name__ == '__main__':
+    # Check to see if we're running linux (syntax highlighting only supports Linux terminals)
+    import os
+    linux = (os.name == "posix")
+    fin = open("test.py",'r')
+    contents = fin.readlines()
+    fin.close()
+
+    # If we are in a multi-line string
+    in_string = False
+    # Print out the code line-by-line
+    for i in range(len(contents)):
+        if linux:
+            print(str(i + 1).rjust(4,' '),': ', color_line(contents[i], in_string), end = '')
+            if mline_string(contents[i]):
+                in_string = not in_string
+        else:
+            print(str(i + 1).rjust(4,' '),': ', contents[i], end = '')
