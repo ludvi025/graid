@@ -13,9 +13,9 @@ def is_keyword(s):
     s = str(s)
     keywords = ['and', 'as', 'assert', 'bool', 'break', 'chr', 'class',
     'continue', 'def', 'del', 'del', 'dict', 'elif', 'else', 'except',
-    'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'int', 'is',
-    'lambda', 'len', 'list', 'nonlocal', 'not', 'open', 'or', 'pass', 'print',
-    'raise', 'return', 'set', 'str', 'try', 'while', 'with', 'yield']
+    'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'int', 'input',
+    'is', 'lambda', 'len', 'list', 'nonlocal', 'not', 'open', 'or', 'pass',
+    'print', 'raise', 'return', 'set', 'str', 'try', 'while', 'with', 'yield']
     return s in keywords
 
 # Is a string a value? (bool / number / None)
@@ -58,11 +58,11 @@ def color_word(s):
     if is_value(s):
         return RED + s + END
     elif is_keyword(s):
-        return CYAN + s + END
+        return YELLOW + s + END
     elif is_string(s):
         return GREEN + s + END
     elif is_comment(s):
-        return YELLOW + s + END
+        return CYAN + s + END
     else:
         return s
 
@@ -117,7 +117,7 @@ def color_line(line, mline_string = False):
         while i < len(lwords):
             # Comment out rest of line if it's a comment
             if is_comment(lwords[i]):
-                lwords[i] = YELLOW + lwords[i]
+                lwords[i] = CYAN + lwords[i]
                 lwords[len(lwords) - 1] += END
                 i = len(lwords)
             else:
@@ -127,7 +127,7 @@ def color_line(line, mline_string = False):
     elif mline_string:
         line = GREEN + line + END
     else:
-        line = YELLOW + line + END
+        line = CYAN + line + END
     return line
 
 if __name__ == '__main__':
