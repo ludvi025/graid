@@ -5,6 +5,8 @@ import signal
 
 from ..debug import dbprint, db_exec_info
 
+from .syntaxhi import color_line
+from .syntaxhi import mline_string
 
 from .tester import runWithInput
 
@@ -20,7 +22,7 @@ run_in_interpreter_msg = '''
 +------------------------------+
 | Launching Python Interpreter |
 |  (Press Ctrl+D to quit...)   |
-+------------------------------+    
++------------------------------+
 '''
 
 run_tests_msg = '''
@@ -30,22 +32,32 @@ run_tests_msg = '''
 '''
 
 # Display the contents of the student's homework file
-# for manual inspection and partial credit. Displays 
+# for manual inspection and partial credit. Displays
 # with line numbers for easy reference.
 def printCode(file_path):
     print(print_src_msg)
 
     try:
+        # Check to see if we're running linux (syntax highlighting only supports Linux terminals)
+        linux = (os.name == "posix")
+
         fin = open(file_path,'r')
-        contents = list(fin)
+        contents = fin.readlines()
         fin.close()
 
-        while contents[-1] == '\n' and len(contents) > 0:
-            contents.pop()
-
+        # If we are in a multi-line string
+        in_string = False
+        # Print out the code line-by-line
         for i in range(len(contents)):
-            print(str(i+1).rjust(4,' '),': ', contents[i], end='')
-        print()
+            if linux:
+                print(str(i + 1).rjust(4,' '),': ', color_line(contents[i], in_string), end = '')
+                if mline_string(contents[i]):
+                    in_string = not in_string
+            else:
+                print(str(i + 1).rjust(4,' '),': ', contents[i], end = '')
+
+        print('\n')
+        print('\nFile: ',file_path)
     except:
         print('Failed to open file: {}\n'.format(file_path))
         dbprint(db_exec_info())
@@ -103,4 +115,3 @@ def runTests(file_path, test):
 def _graceful_handler(signum, frame):
     print("\n\033[91mLooks like you pushed Ctrl-C.\033[0m")
     print("Feel free to push it again if you actually want to quit the script.\n")
-
