@@ -1,3 +1,6 @@
+# Graid has moved!
+## [New Repository](https://github.umn.edu/thegraidsquad/graid)
+
 # graid
 
 Python homework grading assistant.
